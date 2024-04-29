@@ -1,0 +1,11 @@
+{
+  "name": "student_dropout_analysis_for_school",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Niraj Vernekar",
+  "license": "ISC"
+}
