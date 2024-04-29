@@ -1,4 +1,4 @@
-const { body, param } = require('express-validator');
+const { validationResult } = require('express-validator');
 const School = require('../models/schoolmodel');
 
 // Function to create a successful response
@@ -19,39 +19,16 @@ const createFailureResponse = (res, errorMessage) => {
     });
 };
 
-// Validation middleware for creating or updating a school
-const validateSchool = (req, res, next) => {
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-        return createFailureResponse(res, errors.array());
-    }
-    next();
-};
-
 // Controller to create a new school
-exports.createSchool = [
-    // Add validation rules using express-validator
-    body('name').notEmpty().isString(),
-    body('location.area').notEmpty().isString(),
-    body('location.city').notEmpty().isString(),
-    body('location.state').notEmpty().isString(),
-    body('location.pincode').notEmpty().isString(),
-    body('location.mapLocation.coordinates').isArray({ min: 2, max: 2 }).withMessage('Coordinates must be an array with two elements'),
-    // Add more validation rules as needed
-
-    // Call the validation middleware before handling the request
-    validateSchool,
-
-    async (req, res) => {
-        try {
-            const newSchool = new School(req.body);
-            await newSchool.save();
-            createSuccessResponse(res, newSchool, 'School created successfully');
-        } catch (error) {
-            createFailureResponse(res, error.message);
-        }
+exports.createSchool = async (req, res) => {
+    try {
+        const newSchool = new School(req.body);
+        await newSchool.save();
+        createSuccessResponse(res, newSchool, 'School created successfully');
+    } catch (error) {
+        createFailureResponse(res, error.message);
     }
-];
+};
 
 // Controller to get all schools
 exports.getAllSchools = async (req, res) => {

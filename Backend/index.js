@@ -15,6 +15,7 @@ app.use(cors());
 app.use('/api/school',require('./routes/school_route'))
 app.use('/api/student',require('./routes/student_route'))
 app.use('/api/admin',require('./routes/admin_route'))
+app.use('/api/search',require('./routes/search_routes'))
 // Start the server
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
