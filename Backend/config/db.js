@@ -1,4 +1,4 @@
-require('dotenv').config(); // Import dotenv to load environment variables
+require('dotenv').config(); s
 
 const mongoose = require('mongoose');
 

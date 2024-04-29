@@ -37,8 +37,7 @@ exports.createStudent = [
     body('standard').notEmpty().isInt({ min: 1 }),
     body('caste').notEmpty().isString(),
     body('schoolId').notEmpty().isMongoId(),
-    // Add more validation rules as needed
-
+  
     // Call the validation middleware before handling the request
     validateStudent,
 
