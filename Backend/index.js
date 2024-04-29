@@ -3,6 +3,8 @@ const app = express();
 const connectToMongo = require('./config/db');
 const cors = require('cors');
 require('dotenv').config();
+
+
 // Connect to MongoDB
 connectToMongo();
 
@@ -10,7 +12,8 @@ connectToMongo();
 app.use(express.json());
 app.use(cors());
 
-
+app.use('/api/school',require('./routes/school_route'))
+app.use('/api/student',require('./routes/student_route'))
 
 // Start the server
 const PORT = process.env.PORT || 5000;
