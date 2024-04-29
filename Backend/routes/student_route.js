@@ -32,4 +32,7 @@ router.put('/update-student/:id', studentController.updateStudentById);
 // Route to delete a student by ID
 router.delete('/delete-student/:id', studentController.deleteStudentById);
 
+
+router.get('/filter-students',studentController.filterStudents)
+
 module.exports = router;
