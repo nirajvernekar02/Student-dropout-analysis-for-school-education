@@ -9,9 +9,11 @@ const studentSchema = new mongoose.Schema({
   gender: {
     type: String,
   },
+  dateOfBirth: {
+    type: Date
+  },
   age: {
-    type: Number,
-    required: true
+    type: Number
   },
   standard: {
     type: Number,
@@ -36,8 +38,21 @@ const studentSchema = new mongoose.Schema({
   },
   dropoutFeedback: {
     type: String
-  }
-});
+  },
+  schoolJoiningDate: {
+    type: Date
+  },
+  streamAfter10th: {
+    type: String
+  },
+  dateLeftSchool: {
+    type: Date
+  },
+
+},{
+    timestamps:true
+},
+);
 
 const Student = mongoose.model('Student', studentSchema);
 

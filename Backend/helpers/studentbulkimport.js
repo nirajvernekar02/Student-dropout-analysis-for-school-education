@@ -1,5 +1,6 @@
 const csv = require('csvtojson');
-const Student = require('../models/studentmodel')
+const Student = require('../models/studentmodel');
+
 const importStudents = async (req, res) => {
   try {
     // Extracting data from the request body
@@ -13,13 +14,27 @@ const importStudents = async (req, res) => {
     // Read the uploaded CSV file and parse it into JSON
     const studentData = await csv().fromFile(req.file.path);
 
-    // Add schoolId to each student object
-    studentData.forEach(student => {
-      student.schoolId = schoolId;
-    });
+    // Map CSV data to match the new schema
+    const mappedStudentData = studentData.map(student => ({
+      name: student.Name,
+      gender: student.Gender,
+      age: parseInt(student.Age),
+      standard: parseInt(student.Standard),
+      caste: student.Caste,
+      schoolId: schoolId,
+      dropoutStatus: false, // Assuming all imported students are not dropouts initially
+      dropoutReason: '',
+      dropoutPrediction: null,
+      dropoutFeedback: '',
+      dob: student.DOB,
+      schoolJoiningDate: student.School_Joining_Date,
+      streamAfter10th: student.Stream_After_10th,
+      joinedSchoolDate: student.Joined_School_Date,
+      leftSchoolDate: student.Left_School_Date
+    }));
 
     // Insert all the student data into the database
-    await Student.insertMany(studentData);
+    await Student.insertMany(mappedStudentData);
 
     // Send success response
     res.status(200).json({ success: true, message: 'Students imported successfully' });

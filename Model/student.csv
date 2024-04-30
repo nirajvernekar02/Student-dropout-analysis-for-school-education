@@ -1,0 +1,4 @@
+Name,Gender,DateOfBirth,Age,Standard,Caste,DropoutStatus,DropoutReason,DropoutPrediction,DropoutFeedback,SchoolJoiningDate,StreamAfter10th,DateLeftSchool
+John Doe,Male,2005-03-15,17,11,General,false,,,,"2020-04-01",Science,2023-05-15
+Jane Smith,Female,2006-07-25,16,10,SC,false,,,,"2019-08-12",Commerce,
+Michael Johnson,Male,2004-11-10,18,12,General,false,,,,"2018-07-20",Science,2022-04-30

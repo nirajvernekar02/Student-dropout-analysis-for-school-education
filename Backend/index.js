@@ -2,6 +2,9 @@ const express = require('express');
 const app = express();
 const connectToMongo = require('./config/db');
 const cors = require('cors');
+const cron = require('node-cron');
+
+
 require('dotenv').config();
 
 
@@ -17,6 +20,9 @@ app.use('/api/student',require('./routes/student_route'))
 app.use('/api/admin',require('./routes/admin_route'))
 app.use('/api/search',require('./routes/search_routes'))
 app.use('/api/user',require('./routes/user_route'))
+
+
+
 
 // Start the server
 const PORT = process.env.PORT || 5000;

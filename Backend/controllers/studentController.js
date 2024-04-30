@@ -4,8 +4,8 @@ const { validationResult } = require('express-validator');
 // Function to create a successful response
 const createSuccessResponse = (res, data, message) => {
     res.status(200).json({
-        status: 1,
-        message: message || 'success',
+        success: true,
+        message: message || 'Success',
         data: data || {}
     });
 };
@@ -13,8 +13,8 @@ const createSuccessResponse = (res, data, message) => {
 // Function to create a failure response
 const createFailureResponse = (res, errorMessage) => {
     res.status(400).json({
-        status: 0,
-        message: 'failure',
+        success: false,
+        message: 'Failure',
         error: errorMessage,
     });
 };
@@ -79,8 +79,7 @@ exports.deleteStudentById = async (req, res) => {
     }
 };
 
-// Filter Students
-
+// Controller to filter students
 exports.filterStudents = async (req, res) => {
     try {
         // Extracting filter parameters from request query
@@ -95,14 +94,6 @@ exports.filterStudents = async (req, res) => {
         if (age) filter.age = age;
         if (standard) filter.standard = standard;
 
-        // Ensure that only indexed fields are used in sorting or filtering
-        const indexedFields = ['schoolId', 'gender', 'caste', 'age', 'standard'];
-        for (const key in filter) {
-            if (!indexedFields.includes(key)) {
-                return res.status(400).json({ error: `${key} is not an indexed field` });
-            }
-        }
-
         // Ensure efficient query execution by analyzing query plan
         const explainResult = await Student.find(filter).explain();
 
@@ -110,9 +101,8 @@ exports.filterStudents = async (req, res) => {
         const students = await Student.find(filter).limit(100).lean(); // Limiting the number of documents returned
 
         // Sending the filtered student data as response
-        res.status(200).json({ success: true, students });
+        createSuccessResponse(res, students, 'Filtered students retrieved successfully');
     } catch (error) {
-        console.error('Error filtering students:', error);
-        res.status(500).json({ error: 'Internal Server Error' });
+        createFailureResponse(res, error.message);
     }
 };
