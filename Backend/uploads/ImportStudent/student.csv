@@ -1,0 +1,3 @@
+name,gender,age,standard,caste,dropoutStatus,dropoutReason,dropoutPrediction,dropoutFeedback
+John Doe,male,15,10,General,false,,,
+Jane Smith,female,14,9,OBC,true,Lack of resources,2,Needs financial assistance

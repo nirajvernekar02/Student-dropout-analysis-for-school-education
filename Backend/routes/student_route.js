@@ -7,7 +7,7 @@ const importStudents = require('../helpers/studentbulkimport')
 // Multer storage configuration
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
-      cb(null, './uploads'); 
+      cb(null, './uploads/ImportStudent'); 
     },
     filename: (req, file, cb) => {
       cb(null, file.originalname);

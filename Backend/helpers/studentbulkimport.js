@@ -1,6 +1,5 @@
-const Student = require('../models/studentmodel');
-const fs = require('fs');
-
+const csv = require('csvtojson');
+const Student = require('../models/studentmodel')
 const importStudents = async (req, res) => {
   try {
     // Extracting data from the request body
@@ -11,31 +10,13 @@ const importStudents = async (req, res) => {
       return res.status(400).json({ error: 'schoolId is required' });
     }
 
-    // Read the uploaded CSV file
-    const csvData = fs.readFileSync(req.file.path, 'utf8').split('\n');
+    // Read the uploaded CSV file and parse it into JSON
+    const studentData = await csv().fromFile(req.file.path);
 
-    // Prepare the array to store imported student data
-    const studentData = [];
-
-    // Assuming the first row contains column headers
-    const headers = csvData[0].split(',');
-
-    // Iterate over each row of the CSV data, starting from the second row
-    for (let i = 1; i < csvData.length; i++) {
-      const row = csvData[i].split(',');
-
-      // Create student object by mapping each header to its corresponding value in the row
-      const studentObj = {};
-      for (let j = 0; j < headers.length; j++) {
-        studentObj[headers[j]] = row[j];
-      }
-
-      // Add schoolId to the student object
-      studentObj.schoolId = schoolId;
-
-      // Push the student object to the studentData array
-      studentData.push(studentObj);
-    }
+    // Add schoolId to each student object
+    studentData.forEach(student => {
+      student.schoolId = schoolId;
+    });
 
     // Insert all the student data into the database
     await Student.insertMany(studentData);
