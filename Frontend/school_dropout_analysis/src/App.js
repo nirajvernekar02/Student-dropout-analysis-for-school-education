@@ -1,30 +1,23 @@
-import React from 'react';
-import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
-import './App.css';
-import LoginForm from './components/Login';
-import Footer from './components/Footer'; 
+import React from "react";
+import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
+import "./App.css";
+import LoginForm from "./components/Login";
+
+import SignUp from "./components/Authentication/Sign_up";
+import Landing from "./components/Landing Page/LandingPage";
+import Navbar from "./components/Navbar/Navbar";
 
 function App() {
   return (
     <Router>
       <div className="App">
-        <nav>
-          <ul>
-            <li>
-              <Link to="/">Home</Link>
-            </li>
-            <li>
-              <Link to="/login">Login</Link>
-            </li>
-          </ul>
-        </nav>
-
         <Routes>
+          <Route path="/navbar" element={<Navbar />} />
           <Route path="/" element={<Home />} />
           <Route path="/login" element={<LoginForm />} />
+          <Route path="/signup" element={<SignUp />} />
+          <Route path="/landing" element={<Landing />} />
         </Routes>
-
-
       </div>
     </Router>
   );
