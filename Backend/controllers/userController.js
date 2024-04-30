@@ -1,17 +1,25 @@
 const User = require('../models/usermodel');
-
+const bcrypt = require('bcrypt');
 // Controller for user registration
 exports.registerUser = async (req, res) => {
-  try {
-    const { fullName, email, mobileNo, password, city, pincode, highestQualification } = req.body;
-    const user = new User({ fullName, email, mobileNo, password, city, pincode, highestQualification });
-    await user.save();
-    res.status(201).json({ success: true, message: 'User registered successfully' });
-  } catch (error) {
-    console.error('Error registering user:', error);
-    res.status(500).json({ error: 'Internal Server Error' });
-  }
-};
+    try {
+      const { fullName, email, mobileNo, password, city, pincode, highestQualification } = req.body;
+  
+      // Hash the password
+      const hashedPassword = await bcrypt.hash(password, 10);
+  
+      // Create a new user with hashed password
+      const user = new User({ fullName, email, mobileNo, password: hashedPassword, city, pincode, highestQualification });
+      
+      // Save the user to the database
+      await user.save();
+  
+      res.status(201).json({ success: true, message: 'User registered successfully' });
+    } catch (error) {
+      console.error('Error registering user:', error);
+      res.status(500).json({ error: 'Internal Server Error' });
+    }
+  };
 
 // Controller for user login
 exports.loginUser = async (req, res) => {
