@@ -1,5 +1,6 @@
 const User = require('../models/usermodel');
 const bcrypt = require('bcrypt');
+
 // Controller for user registration
 exports.registerUser = async (req, res) => {
     try {
@@ -23,21 +24,32 @@ exports.registerUser = async (req, res) => {
 
 // Controller for user login
 exports.loginUser = async (req, res) => {
-  try {
-    const { email, password } = req.body;
-    const user = await User.findOne({ email });
-    if (!user) {
-      return res.status(404).json({ error: 'User not found' });
+    try {
+      const { email, password } = req.body;
+  
+      // Find user by email
+      const user = await User.findOne({ email });
+  
+      // If user not found, return error
+      if (!user) {
+        return res.status(404).json({ error: 'User not found' });
+      }
+  
+      // Compare hashed password with provided password
+      const passwordMatch = await bcrypt.compare(password, user.password);
+  
+      // If passwords don't match, return error
+      if (!passwordMatch) {
+        return res.status(401).json({ error: 'Invalid credentials' });
+      }
+  
+      // Passwords match, user logged in successfully
+      res.status(200).json({ success: true, message: 'User logged in successfully' });
+    } catch (error) {
+      console.error('Error logging in user:', error);
+      res.status(500).json({ error: 'Internal Server Error' });
     }
-    if (user.password !== password) {
-      return res.status(401).json({ error: 'Invalid credentials' });
-    }
-    res.status(200).json({ success: true, message: 'User logged in successfully' });
-  } catch (error) {
-    console.error('Error logging in user:', error);
-    res.status(500).json({ error: 'Internal Server Error' });
-  }
-};
+  };
 
 // Controller for updating user profile
 exports.updateUserProfile = async (req, res) => {
