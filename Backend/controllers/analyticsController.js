@@ -318,3 +318,57 @@ exports.getDropoutRatioByLocation = async (req, res) => {
         res.status(500).json({ error: err.message });
     }
 };
+
+
+exports.getDropoutAnalysis = async (req, res) => {
+    try {
+      const filters = {};
+  
+      // Build filters based on query parameters
+      if (req.query.state) {
+        filters['schoolId.location.state'] = req.query.state;
+      }
+      if (req.query.location) {
+        const [lng, lat] = req.query.location.split(',').map(Number);
+        filters['schoolId.location.mapLocation'] = {
+          $near: {
+            $geometry: {
+              type: 'Point',
+              coordinates: [lng, lat]
+            },
+          }
+        };
+      }
+      if (req.query.gender) {
+        filters.gender = req.query.gender;
+      }
+      if (req.query.age) {
+        filters.age = req.query.age;
+      }
+      if (req.query.standard) {
+        filters.standard = req.query.standard;
+      }
+      if (req.query.category) {
+        filters.caste = req.query.category;
+      }
+  
+      const students = await Student.find({ dropoutStatus: true, ...filters })
+        .populate({
+          path: 'schoolId',
+          select: 'name location'
+        })
+        .select('name gender age standard caste dropoutReason dropoutPrediction schoolId');
+  
+      const populatedStudents = students.map(student => {
+        const schoolLocation = student.schoolId.location;
+        return {
+          ...student.toObject(),
+          schoolLocation
+        };
+      });
+  
+      res.json(populatedStudents);
+    } catch (err) {
+      res.status(500).json({ error: err.message });
+    }
+  };

@@ -17,6 +17,6 @@ router.get('/max-dropout-age',analyticController.findMaxDropoutAge)
 
 router.get('/state-wise',analyticController.compareDropoutRatioStatewise)
 
-
+router.get('/drop-out-analysis',analyticController.getDropoutAnalysis)
 
 module.exports = router

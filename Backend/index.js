@@ -21,6 +21,7 @@ app.use('/api/admin',require('./routes/admin_route'))
 app.use('/api/search',require('./routes/search_routes'))
 app.use('/api/user',require('./routes/user_route'))
 app.use('/api/analytics',require('./routes/analytics_route'))
+app.use('/api/count',require('./routes/count_routes'))
 
 
 
