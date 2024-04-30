@@ -1,0 +1,3 @@
+Name,Area,City,State,Pincode,Longitude,Latitude,Type,StudentCount,DropoutPrediction,DropoutFeedback
+School A,Area A,City A,State A,123456,12.3456,78.9012,government,500,50,High dropout rate
+School B,Area B,City B,State B,234567,23.4567,67.8901,private,300,20,Low dropout rate

@@ -70,22 +70,32 @@ exports.compareDropoutRatioStatewise = async (req, res) => {
 // Function to get dropout ratio based on school
 exports.getDropoutRatioBySchool = async (req, res) => {
     try {
-      const schoolId = req.query.schoolId;
-      const school = await School.findById(schoolId);
-  
-      if (!school) {
-        return res.status(404).json({ error: 'School not found' });
-      }
-  
-      const students = await Student.find({ schoolId });
-      const dropoutStudents = students.filter(student => student.dropoutStatus);
-      const dropoutRatio = dropoutStudents.length / students.length;
-  
-      res.status(200).json({ school, dropoutRatio });
+        const schoolId = req.query.schoolId;
+        
+        // Find the school by ID
+        const school = await School.findById(schoolId);
+        if (!school) {
+            return res.status(404).json({ error: 'School not found' });
+        }
+        
+        // Find all students belonging to the specified school
+        const students = await Student.find({ schoolId });
+        if (students.length === 0) {
+            return res.status(200).json({ school, dropoutRatio: 0 });
+        }
+
+        // Calculate the number of dropout students
+        const dropoutStudents = students.filter(student => student.dropoutStatus);
+        
+        // Calculate the dropout ratio
+        const dropoutRatio = dropoutStudents.length / students.length;
+
+        res.status(200).json({ school, dropoutRatio });
     } catch (err) {
-      res.status(500).json({ error: err.message });
+        res.status(500).json({ error: err.message });
     }
-  };
+};
+
   
   // Function to get dropout ratio based on area
   exports.getDropoutRatioByArea = async (req, res) => {
@@ -141,8 +151,8 @@ exports.getDropoutRatioBySchool = async (req, res) => {
     }
   };
   
-  // Function to get dropout ratio based on caste
-  exports.getDropoutRatioByCaste = async (req, res) => {
+// Function to get dropout ratio based on caste
+exports.getDropoutRatioByCaste = async (req, res) => {
     try {
       const casteGroups = {};
       const students = await Student.find();
@@ -157,7 +167,7 @@ exports.getDropoutRatioBySchool = async (req, res) => {
   
         casteGroups[caste].totalStudents += 1;
   
-        if (isDropout) {
+        if (isDropout === true) {
           casteGroups[caste].dropoutStudents += 1;
         }
       });
@@ -175,108 +185,136 @@ exports.getDropoutRatioBySchool = async (req, res) => {
     }
   };
   
-  // Function to get dropout ratio based on age/standard
-  exports.getDropoutRatioByAgeStandard = async (req, res) => {
+// Function to get dropout ratio based on age/standard
+exports.getDropoutRatioByStandard = async (req, res) => {
     try {
-      const ageStandardGroups = {};
-      const students = await Student.find();
-  
-      students.forEach(student => {
-        const age = student.age;
-        const standard = student.standard;
-        const ageStandard = `${age}-${standard}`;
-        const isDropout = student.dropoutStatus;
-  
-        if (!ageStandardGroups[ageStandard]) {
-          ageStandardGroups[ageStandard] = { totalStudents: 0, dropoutStudents: 0 };
-        }
-  
-        ageStandardGroups[ageStandard].totalStudents += 1;
-  
-        if (isDropout) {
-          ageStandardGroups[ageStandard].dropoutStudents += 1;
-        }
-      });
-  
-      const ageStandardData = Object.entries(ageStandardGroups).map(([ageStandard, { totalStudents, dropoutStudents }]) => ({
-        ageStandard,
-        totalStudents,
-        dropoutStudents,
-        dropoutRatio: dropoutStudents / totalStudents,
-      }));
-  
-      res.status(200).json({ ageStandardData });
+        const standardGroups = {};
+        const students = await Student.find();
+
+        // Iterate through each student
+        students.forEach(student => {
+            const standard = student.standard;
+            const isDropout = student.dropoutStatus;
+
+            // Initialize the group if it doesn't exist
+            if (!standardGroups[standard]) {
+                standardGroups[standard] = { totalStudents: 0, dropoutStudents: 0 };
+            }
+
+            // Increment total students count
+            standardGroups[standard].totalStudents += 1;
+
+            // Increment dropout students count if the student has dropped out
+            if (isDropout) {
+                standardGroups[standard].dropoutStudents += 1;
+            }
+        });
+
+        // Calculate dropout ratio for each standard
+        const standardData = Object.entries(standardGroups).map(([standard, { totalStudents, dropoutStudents }]) => ({
+            standard,
+            totalStudents,
+            dropoutStudents,
+            dropoutRatio: totalStudents === 0 ? 0 : dropoutStudents / totalStudents,
+        }));
+
+        res.status(200).json({ standardData });
     } catch (err) {
-      res.status(500).json({ error: err.message });
+        res.status(500).json({ error: err.message });
     }
-  };
+};
 
 
-  // Function to get the dropout ratio based on age
+
 exports.getDropoutRatioByAge = async (req, res) => {
     try {
-      const dropoutStudents = await Student.find({ dropoutStatus: true });
-      const ageGroups = {};
-  
-      // Group students by age and count dropouts
-      dropoutStudents.forEach((student) => {
-        const age = student.age;
-        ageGroups[age] = (ageGroups[age] || 0) + 1;
-      });
-  
-      res.status(200).json({ ageGroups });
+        const ageGroups = {};
+        const students = await Student.find();
+
+        // Iterate through each student
+        students.forEach(student => {
+            const ageGroup = Math.floor(student.age / 5) * 5; // Group age into intervals of 5
+            const isDropout = student.dropoutStatus;
+
+            // Create a key for the age group
+            const ageKey = `${ageGroup}-${ageGroup + 4}`;
+
+            // Initialize the group if it doesn't exist
+            if (!ageGroups[ageKey]) {
+                ageGroups[ageKey] = { totalStudents: 0, dropoutStudents: 0 };
+            }
+
+            // Increment total students count
+            ageGroups[ageKey].totalStudents += 1;
+
+            // Increment dropout students count if the student has dropped out
+            if (isDropout) {
+                ageGroups[ageKey].dropoutStudents += 1;
+            }
+        });
+
+        // Calculate dropout ratio for each age group
+        const ageData = Object.entries(ageGroups).map(([ageKey, { totalStudents, dropoutStudents }]) => ({
+            ageGroup: ageKey,
+            totalStudents,
+            dropoutStudents,
+            dropoutRatio: totalStudents === 0 ? 0 : dropoutStudents / totalStudents,
+        }));
+
+        // Sort the ageData array by ageGroup
+        ageData.sort((a, b) => {
+            const ageGroupA = parseInt(a.ageGroup.split('-')[0]);
+            const ageGroupB = parseInt(b.ageGroup.split('-')[0]);
+            return ageGroupA - ageGroupB;
+        });
+
+        res.status(200).json({ ageData });
     } catch (err) {
-      res.status(500).json({ error: err.message });
+        res.status(500).json({ error: err.message });
     }
-  };
+};
+
   
-  // Function to get the dropout ratio based on location (state, area, pincode)
-  exports.getDropoutRatioByLocation = async (req, res) => {
+exports.getDropoutRatioByLocation = async (req, res) => {
     try {
-      const schools = await School.find({}, { location: 1, studentCount: 1 });
-      const locationData = {};
-  
-      // Group schools by location and calculate dropout ratio
-      schools.forEach((school) => {
-        const { state, area, pincode } = school.location;
-        const studentCount = school.studentCount;
-  
-        if (!locationData[state]) {
-          locationData[state] = {};
+        const students = await Student.find();
+        const locationData = {};
+
+        // Group students by location and calculate dropout ratio
+        for (const student of students) {
+            const schoolId = student.schoolId;
+            const school = await School.findById(schoolId);
+            if (!school) continue; // Skip if school not found
+
+            const { state, area, pincode } = school.location;
+            const isDropout = student.dropoutStatus;
+
+            // Initialize locationData if it doesn't exist
+            locationData[state] = locationData[state] || {};
+            locationData[state][area] = locationData[state][area] || {};
+            locationData[state][area][pincode] = locationData[state][area][pincode] || { studentCount: 0, dropoutCount: 0 };
+
+            // Increment student count
+            locationData[state][area][pincode].studentCount += 1;
+
+            // Increment dropout count if student is a dropout
+            if (isDropout) {
+                locationData[state][area][pincode].dropoutCount += 1;
+            }
         }
-        if (!locationData[state][area]) {
-          locationData[state][area] = {};
+
+        // Calculate dropout ratio for each location
+        for (const state in locationData) {
+            for (const area in locationData[state]) {
+                for (const pincode in locationData[state][area]) {
+                    const { studentCount, dropoutCount } = locationData[state][area][pincode];
+                    locationData[state][area][pincode].dropoutRatio = studentCount === 0 ? null : dropoutCount / studentCount;
+                }
+            }
         }
-        if (!locationData[state][area][pincode]) {
-          locationData[state][area][pincode] = { studentCount: 0, dropoutCount: 0 };
-        }
-  
-        locationData[state][area][pincode].studentCount += studentCount;
-      });
-  
-      const dropoutStudents = await Student.find({ dropoutStatus: true });
-      dropoutStudents.forEach((student) => {
-        const schoolId = student.schoolId;
-        const school = schools.find((s) => s._id.equals(schoolId));
-  
-        if (school) {
-          const { state, area, pincode } = school.location;
-          locationData[state][area][pincode].dropoutCount += 1;
-        }
-      });
-  
-      // Calculate dropout ratio for each location
-      for (const state in locationData) {
-        for (const area in locationData[state]) {
-          for (const pincode in locationData[state][area]) {
-            const { studentCount, dropoutCount } = locationData[state][area][pincode];
-            locationData[state][area][pincode].dropoutRatio = dropoutCount / studentCount;
-          }
-        }
-      }
-  
-      res.status(200).json({ locationData });
+
+        res.status(200).json({ locationData });
     } catch (err) {
-      res.status(500).json({ error: err.message });
+        res.status(500).json({ error: err.message });
     }
-  };
+};
