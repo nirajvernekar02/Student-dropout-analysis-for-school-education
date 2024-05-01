@@ -35,4 +35,7 @@ router.delete('/delete-student/:id', studentController.deleteStudentById);
 
 router.get('/filter-students',studentController.filterStudents)
 
+router.get('/get-by-id',studentController.getStudentById);
+
+
 module.exports = router;

@@ -58,7 +58,7 @@ const registerAdmin = async (req, res) => {
 // Controller to login an admin
 const loginAdmin = async (req, res) => {
     try {
-        const { emailUsr, usrPwd } = req.body;
+        const { emailUsr, usrPwd } = req.query;
 
         // Find admin by email
         const admin = await Admin.findOne({ emailUsr });
@@ -95,8 +95,12 @@ const getAllAdmins = async (req, res) => {
 // Controller to delete an admin
 const deleteAdmin = async (req, res) => {
     try {
-        const { adminId } = req.params;
-        const deletedAdmin = await Admin.findByIdAndDelete(adminId);
+        const { adminId } = req.query;
+        const deletedAdmin = await Admin.findById(adminId);
+        if(!deletedAdmin){
+            res.status(400).json('Admin Not Found')
+        }
+        deletedAdmin.deleteOne();
         createSuccessResponse(res, deletedAdmin, 'Admin deleted successfully');
     } catch (error) {
         createFailureResponse(res, error.message);
@@ -106,7 +110,7 @@ const deleteAdmin = async (req, res) => {
 // Controller to update an admin
 const updateAdmin = async (req, res) => {
     try {
-        const { adminId } = req.params;
+        const { adminId } = req.query;
         const updateFields = req.body;
         const updatedAdmin = await Admin.findByIdAndUpdate(adminId, updateFields, { new: true });
         createSuccessResponse(res, updatedAdmin, 'Admin updated successfully');
@@ -115,10 +119,20 @@ const updateAdmin = async (req, res) => {
     }
 };
 
+const getAdminById = async(req,res)=>{
+   try{
+    const {adminId} = req.query;
+    const Admin = Admin.findById(adminId);
+    createSuccessResponse(res, Admin, 'Admin fetched successfully');
+} catch (error) {
+    createFailureResponse(res, error.message);
+}    
+}
 module.exports = {
     registerAdmin,
     loginAdmin,
     getAllAdmins,
     deleteAdmin,
-    updateAdmin
+    updateAdmin,
+    getAdminById
 };

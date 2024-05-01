@@ -12,6 +12,6 @@ router.put('/udpate-admin',adminController.updateAdmin)
 
 router.delete('/delete-admin',adminController.deleteAdmin)
 
-
+router.get('/get-admin-By-Id',adminController.getAdminById)
 
 module.exports = router
