@@ -92,42 +92,46 @@ const getAllAdmins = async (req, res) => {
     }
 };
 
-// Controller to delete an admin
 const deleteAdmin = async (req, res) => {
     try {
         const { adminId } = req.query;
-        const deletedAdmin = await Admin.findById(adminId);
-        if(!deletedAdmin){
-            res.status(400).json('Admin Not Found')
+        const deletedAdmin = await Admin.findByIdAndDelete(adminId);
+        if (!deletedAdmin) {
+            return res.status(404).json({ error: 'Admin not found' });
         }
-        deletedAdmin.deleteOne();
-        createSuccessResponse(res, deletedAdmin, 'Admin deleted successfully');
+        return res.status(200).json({ message: 'Admin deleted successfully' });
     } catch (error) {
-        createFailureResponse(res, error.message);
+        return res.status(500).json({ error: error.message });
     }
 };
 
-// Controller to update an admin
 const updateAdmin = async (req, res) => {
     try {
-        const { adminId } = req.query;
+        const { adminId } = req.params;
         const updateFields = req.body;
         const updatedAdmin = await Admin.findByIdAndUpdate(adminId, updateFields, { new: true });
-        createSuccessResponse(res, updatedAdmin, 'Admin updated successfully');
+        if (!updatedAdmin) {
+            return res.status(404).json({ error: 'Admin not found' });
+        }
+        return res.status(200).json({ message: 'Admin updated successfully', admin: updatedAdmin });
     } catch (error) {
-        createFailureResponse(res, error.message);
+        return res.status(500).json({ error: error.message });
     }
 };
 
-const getAdminById = async(req,res)=>{
-   try{
-    const {adminId} = req.query;
-    const Admin = Admin.findById(adminId);
-    createSuccessResponse(res, Admin, 'Admin fetched successfully');
-} catch (error) {
-    createFailureResponse(res, error.message);
-}    
-}
+const getAdminById = async (req, res) => {
+    try {
+        const { adminId } = req.params;
+        const admin = await Admin.findById(adminId);
+        if (!admin) {
+            return res.status(404).json({ error: 'Admin not found' });
+        }
+        return res.status(200).json({ message: 'Admin fetched successfully', admin });
+    } catch (error) {
+        return res.status(500).json({ error: error.message });
+    }
+};
+
 module.exports = {
     registerAdmin,
     loginAdmin,
