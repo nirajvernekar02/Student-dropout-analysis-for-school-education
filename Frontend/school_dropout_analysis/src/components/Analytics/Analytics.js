@@ -4,6 +4,7 @@ import Age from "./Age";
 import Caste from "./Caste";
 import Gender from "./Gender";
 import School from "./School";
+import Standard from "./Standard";
 import { Button, Stack } from "@mui/material";
 
 const Analytics = () => {
@@ -48,6 +49,8 @@ const Analytics = () => {
         return <Caste />;
       case "Age":
         return <Age />;
+      case "Standard":
+        return <Standard />;
       default:
         return null;
     }
@@ -56,20 +59,8 @@ const Analytics = () => {
   return (
     <div className="container justify-center" style={{ padding: "20px" }}>
       <h1 className="text-2xl lg:text-5xl font-bold mb-10">Analytics</h1>
-      <div style={{ marginBottom: "40px" }}>
-        {/* <Select
-          value={selectedOption}
-          onChange={handleOptionChange}
-          style={{ minWidth: "120px" }}
-        >
-          <MenuItem value="School">School Wise</MenuItem>
-          <MenuItem value="Area">Area Wise</MenuItem>
-          <MenuItem value="Gender">Gender Wise</MenuItem>
-          <MenuItem value="Caste">Caste Wise</MenuItem>
-          <MenuItem value="Age">Age Wise</MenuItem>
-          
-        </Select> */}
-        <Stack spacing={2} direction="row">
+      <div>
+        <Stack spacing={2} className="justify-center" direction="row">
           <Button
             variant={handleVariantChange("School")}
             onClick={() => handleButtonClick("School")}
@@ -99,6 +90,12 @@ const Analytics = () => {
             onClick={() => handleButtonClick("Age")}
           >
             Age
+          </Button>
+          <Button
+            variant={handleVariantChange("Standard")}
+            onClick={() => handleButtonClick("Standard")}
+          >
+            Standard
           </Button>
         </Stack>
       </div>

@@ -11,18 +11,18 @@ import {
 import { Bar, Pie } from "react-chartjs-2";
 import Chart from "../../chartUtils.js";
 
-const Caste = () => {
-  const [selectedOption, setSelectedOption] = useState("General");
-  const [casteData, setCasteData] = useState([]);
+const Standard = () => {
+  const [selectedOption, setSelectedOption] = useState("0");
+  const [standardData, setStandardData] = useState([]);
 
   useEffect(() => {
     axios
-      .get("http://localhost:5000/api/analytics/dropout-ratio/caste")
+      .get("http://localhost:5000/api/analytics/dropout-ratio/standard")
       .then((response) => {
-        setCasteData(response.data.casteData);
+        setStandardData(response.data.standardData);
       })
       .catch((error) => {
-        console.error("Error fetching caste data:", error);
+        console.error("Error fetching standard data:", error);
       });
   }, []);
 
@@ -30,9 +30,9 @@ const Caste = () => {
     setSelectedOption(event.target.value);
   };
 
-  // Find the selected caste data
-  const selectedCaste = casteData.find(
-    (caste) => caste.caste === selectedOption
+  // Find the selected standard data
+  const selectedStandard = standardData.find(
+    (standard) => standard.standard === selectedOption
   );
 
   // Prepare data for bar chart
@@ -47,8 +47,8 @@ const Caste = () => {
         hoverBackgroundColor: ["#2196f3", "#4caf50"],
         hoverBorderColor: ["#2196f3", "#4caf50"],
         data: [
-          selectedCaste ? selectedCaste.totalStudents : 0,
-          selectedCaste ? selectedCaste.dropoutStudents : 0,
+          selectedStandard ? selectedStandard.totalStudents : 0,
+          selectedStandard ? selectedStandard.dropoutStudents : 0,
         ],
       },
     ],
@@ -60,8 +60,8 @@ const Caste = () => {
     datasets: [
       {
         data: [
-          selectedCaste ? selectedCaste.totalStudents : 0,
-          selectedCaste ? selectedCaste.dropoutStudents : 0,
+          selectedStandard ? selectedStandard.totalStudents : 0,
+          selectedStandard ? selectedStandard.dropoutStudents : 0,
         ],
         backgroundColor: ["#2196f3", "#4caf50"],
         hoverBackgroundColor: ["#2196f3", "#4caf50"],
@@ -77,9 +77,9 @@ const Caste = () => {
           onChange={handleOptionChange}
           style={{ minWidth: "120px" }}
         >
-          {casteData.map((caste) => (
-            <MenuItem key={caste.caste} value={caste.caste}>
-              {caste.caste}
+          {standardData.map((standard) => (
+            <MenuItem key={standard.standard} value={standard.standard}>
+              {standard.standard}
             </MenuItem>
           ))}
         </Select>
@@ -92,7 +92,7 @@ const Caste = () => {
                 Total Students
               </Typography>
               <Typography variant="h3" style={{ color: "#fff" }}>
-                {selectedCaste ? selectedCaste.totalStudents : "-"}
+                {selectedStandard ? selectedStandard.totalStudents : "-"}
               </Typography>
             </CardContent>
           </Card>
@@ -104,7 +104,7 @@ const Caste = () => {
                 Dropout Students
               </Typography>
               <Typography variant="h3" style={{ color: "#fff" }}>
-                {selectedCaste ? selectedCaste.dropoutStudents : "-"}
+                {selectedStandard ? selectedStandard.dropoutStudents : "-"}
               </Typography>
             </CardContent>
           </Card>
@@ -116,8 +116,8 @@ const Caste = () => {
                 Dropout Ratio
               </Typography>
               <Typography variant="h3" style={{ color: "#fff" }}>
-                {selectedCaste
-                  ? selectedCaste.dropoutRatio.toFixed(4) + "%"
+                {selectedStandard
+                  ? (selectedStandard.dropoutRatio * 100).toFixed(2) + "%"
                   : "-"}
               </Typography>
             </CardContent>
@@ -148,4 +148,4 @@ const Caste = () => {
   );
 };
 
-export default Caste;
+export default Standard;

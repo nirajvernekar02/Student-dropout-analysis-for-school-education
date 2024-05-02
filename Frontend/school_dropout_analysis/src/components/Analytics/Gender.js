@@ -71,7 +71,7 @@ const Gender = () => {
 
   return (
     <div>
-      <div className="my-20">
+      <div className="my-10">
         <Select
           value={selectedOption}
           onChange={handleOptionChange}

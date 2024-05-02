@@ -87,7 +87,7 @@ const School = () => {
 
   return (
     <div>
-      <div className="my-20">
+      <div className="my-10">
         <Autocomplete
           disablePortal
           id="combo-box-demo"
