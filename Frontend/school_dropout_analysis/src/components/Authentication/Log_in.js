@@ -5,7 +5,7 @@ import CssBaseline from "@mui/material/CssBaseline";
 import TextField from "@mui/material/TextField";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Checkbox from "@mui/material/Checkbox";
-import Link from "@mui/material/Link";
+
 import Paper from "@mui/material/Paper";
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
@@ -17,6 +17,12 @@ import { useState } from "react";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
+import LockIcon from "@mui/icons-material/Lock";
+import EmailIcon from "@mui/icons-material/Email";
+
+import Back from "../Images/Login.png";
+import vector from "../Images/LoginVector.png";
 const defaultTheme = createTheme();
 
 export default function SignInSide() {
@@ -39,7 +45,7 @@ export default function SignInSide() {
       );
       console.log(response.data);
       toast.success(response.data.message);
-      navigate("/landing");
+      navigate("/");
     } catch (error) {
       console.error("Error logging in user:", error);
       toast.error("Invalid credentials. Please try again.");
@@ -50,7 +56,16 @@ export default function SignInSide() {
     <ThemeProvider theme={defaultTheme}>
       <Grid container component="main" sx={{ height: "100vh" }}>
         <CssBaseline />
-        <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
+        <Grid
+          item
+          xs={12}
+          sm={8}
+          md={5}
+          component={Paper}
+          elevation={6}
+          square
+          style={{ backgroundColor: "black" }}
+        >
           <Box
             sx={{
               my: 8,
@@ -83,6 +98,26 @@ export default function SignInSide() {
                 autoFocus
                 value={formData.email}
                 onChange={handleChange}
+                InputLabelProps={{
+                  style: { color: "white" }, // Label color set to white
+                }}
+                InputProps={{
+                  style: { color: "white" }, // Text color set to white
+                  startAdornment: <EmailIcon style={{ color: "white" }} />, // Icon color set to white
+                }}
+                sx={{
+                  "& .MuiOutlinedInput-root": {
+                    "& fieldset": {
+                      borderColor: "white", // Border color set to white
+                    },
+                    "&:hover fieldset": {
+                      borderColor: "white", // Border color on hover set to white
+                    },
+                    "&.Mui-focused fieldset": {
+                      borderColor: "white", // Border color when focused set to white
+                    },
+                  },
+                }}
               />
               <TextField
                 margin="normal"
@@ -95,11 +130,31 @@ export default function SignInSide() {
                 autoComplete="current-password"
                 value={formData.password}
                 onChange={handleChange}
+                InputLabelProps={{
+                  style: { color: "white" }, // Label color set to white
+                }}
+                InputProps={{
+                  style: { color: "white" }, // Text color set to white
+                  startAdornment: <LockIcon style={{ color: "white" }} />, // Icon color set to white
+                }}
+                sx={{
+                  "& .MuiOutlinedInput-root": {
+                    "& fieldset": {
+                      borderColor: "white", // Border color set to white
+                    },
+                    "&:hover fieldset": {
+                      borderColor: "white", // Border color on hover set to white
+                    },
+                    "&.Mui-focused fieldset": {
+                      borderColor: "white", // Border color when focused set to white
+                    },
+                  },
+                }}
               />
-              <FormControlLabel
+              {/* <FormControlLabel
                 control={<Checkbox value="remember" color="primary" />}
                 label="Remember me"
-              />
+              /> */}
               <Button
                 type="submit"
                 fullWidth
@@ -115,13 +170,37 @@ export default function SignInSide() {
                   </Link>
                 </Grid>
                 <Grid item>
-                  <Link href="#" variant="body2">
+                  <Link to="/signup" style={{ color: "white" }}>
                     {"Don't have an account? Sign Up"}
                   </Link>
                 </Grid>
               </Grid>
             </Box>
           </Box>
+        </Grid>
+        <Grid
+          style={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            flexDirection: "column",
+          }}
+          item
+          xs={false}
+          sm={4}
+          md={7}
+          sx={{
+            backgroundImage: `url(${Back})`,
+            backgroundRepeat: "no-repeat",
+          }}
+        >
+          <Typography component="h1" variant="h3" style={{ color: "white" }}>
+            Welcome to Student Dropout Analysis Portal
+          </Typography>
+
+          <div>
+            <img src={vector} alt="vector" width={500} />
+          </div>
         </Grid>
       </Grid>
     </ThemeProvider>

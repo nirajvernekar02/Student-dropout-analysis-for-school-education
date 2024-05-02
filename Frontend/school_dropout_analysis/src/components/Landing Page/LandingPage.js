@@ -43,9 +43,8 @@ function LandingPage() {
           </Typography>
           {/* <Typography variant="h6"> */}
           <p className="px-8 text-white" style={{ textAlign: "justify" }}>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin
-            consectetur justo quis euismod vehicula. Quisque diam dui, imperdiet
-            et hendrerit in, accumsan tempus erat.
+          EduDrop Insights is a cutting-edge Data Analytics platform that tackles the high dropout rate crisis in education. By leveraging Data Analytics and data visualization, it provides granular insights into dropout patterns across school, area, gender, caste, and age/standard. 
+
           </p>
           {/* </Typography> */}
           <Link to="/analytics">

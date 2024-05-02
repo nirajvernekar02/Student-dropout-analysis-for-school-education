@@ -14,17 +14,29 @@ import Contact from "./components/Contact/Contact";
 =======
 import Analytics from "./components/Analytics/Analytics";
 import IndiaMap from "./components/Map/map";
+<<<<<<< HEAD
+import Contact from "./components/Contact/Contact";
+import About from "./components/About/About";
+=======
 >>>>>>> f744e7604ec0b61b7d1a0022aab65aea25794278
 
+>>>>>>> 0202838f646cc4d95f0154d881c64815e975502f
 function App() {
   return (
     <Router>
       <div className="App">
         <Routes>
           <Route path="/navbar" element={<Navbar />} />
-          <Route path="/" element={<Home />} />
+          <Route path="/HOME" element={<Home />} />
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<SignUp />} />
+<<<<<<< HEAD
+          <Route path="/" element={<Landing />} />
+          <Route path="/analytics" element={<Analytics />} />
+          <Route path="/map" element={<IndiaMap />} />
+          <Route path="/contact" element={<Contact />} />
+          <Route path="/about" element={<About />} />
+=======
           <Route path="/landing" element={<Landing />} />
 <<<<<<< HEAD
           <Route path="/contact" element={<Contact/>}></Route>
@@ -32,6 +44,7 @@ function App() {
           <Route path="/analytics" element={<Analytics />} />
           <Route path="/map" element={<IndiaMap/>}/>
 >>>>>>> f744e7604ec0b61b7d1a0022aab65aea25794278
+>>>>>>> 0202838f646cc4d95f0154d881c64815e975502f
         </Routes>
       </div>
       <ToastContainer />
@@ -40,7 +53,7 @@ function App() {
 }
 
 const Home = () => {
-  return <h1>Welcome to the School Student Dropout Analysis App</h1>;
+  return <h1></h1>;
 };
 
 export default App;

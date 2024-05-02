@@ -11,7 +11,11 @@ import {
 import { useForm } from "react-hook-form";
 import contactImage from "../../logo.svg";
 import Footer from "../Footer/Footer";
+<<<<<<< HEAD
+import Navbar from "../Navbar/Navbar";
+=======
 import Navbar from '../Navbar/Navbar'
+>>>>>>> 0202838f646cc4d95f0154d881c64815e975502f
 function Contact() {
   const { register, handleSubmit, reset } = useForm();
   const [successModalOpen, setSuccessModalOpen] = useState(false);
@@ -54,7 +58,11 @@ function Contact() {
 
   return (
     <ThemeProvider theme={theme}>
+<<<<<<< HEAD
+      <Navbar></Navbar>
+=======
         <Navbar></Navbar>
+>>>>>>> 0202838f646cc4d95f0154d881c64815e975502f
       <div style={{ fontFamily: "Poppins" }} className="bg-[#F5F5F5]">
         <div className="container mx-auto p-8 bg-[#] rounded-lg">
           <Typography
@@ -181,4 +189,7 @@ function Contact() {
 }
 
 export default Contact;
+<<<<<<< HEAD
+=======
 
+>>>>>>> 0202838f646cc4d95f0154d881c64815e975502f

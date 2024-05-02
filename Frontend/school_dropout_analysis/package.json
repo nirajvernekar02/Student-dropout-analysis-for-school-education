@@ -21,6 +21,10 @@
     "react-chartjs-2": "^5.2.0",
     "react-dom": "^18.3.1",
     "react-hook-form": "^7.51.3",
+<<<<<<< HEAD
+    "react-leaflet": "^4.2.1",
+=======
+>>>>>>> 0202838f646cc4d95f0154d881c64815e975502f
     "react-router-dom": "^6.23.0",
     "react-scripts": "5.0.1",
     "react-simple-maps": "^3.0.0",
