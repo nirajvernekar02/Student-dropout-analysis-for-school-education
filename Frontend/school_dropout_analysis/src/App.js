@@ -11,19 +11,22 @@ import Landing from "./components/Landing Page/LandingPage";
 import Navbar from "./components/Navbar/Navbar";
 import Analytics from "./components/Analytics/Analytics";
 import IndiaMap from "./components/Map/map";
-
+import Contact from "./components/Contact/Contact";
+import About from "./components/About/About";
 function App() {
   return (
     <Router>
       <div className="App">
         <Routes>
           <Route path="/navbar" element={<Navbar />} />
-          <Route path="/" element={<Home />} />
+          <Route path="/HOME" element={<Home />} />
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<SignUp />} />
-          <Route path="/landing" element={<Landing />} />
+          <Route path="/" element={<Landing />} />
           <Route path="/analytics" element={<Analytics />} />
-          <Route path="/map" element={<IndiaMap/>}/>
+          <Route path="/map" element={<IndiaMap />} />
+          <Route path="/contact" element={<Contact />} />
+          <Route path="/about" element={<About />} />
         </Routes>
       </div>
       <ToastContainer />
@@ -32,7 +35,7 @@ function App() {
 }
 
 const Home = () => {
-  return <h1>Welcome to the School Student Dropout Analysis App</h1>;
+  return <h1></h1>;
 };
 
 export default App;
