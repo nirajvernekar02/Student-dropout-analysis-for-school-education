@@ -7,6 +7,7 @@ import AssessmentIcon from "@mui/icons-material/Assessment";
 import BarChartIcon from "@mui/icons-material/BarChart";
 import PercentageREsult from "./PercentageResult";
 import Footer from "../Footer/Footer";
+import { Link } from "react-router-dom";
 import "./Landing.css";
 function LandingPage() {
   return (
@@ -47,6 +48,7 @@ function LandingPage() {
             et hendrerit in, accumsan tempus erat.
           </p>
           {/* </Typography> */}
+          <Link to="/analytics">
           <Button
             color="primary"
             style={{
@@ -61,7 +63,7 @@ function LandingPage() {
             }}
           >
             Analyze
-          </Button>
+          </Button></Link>
         </div>
         <div
           style={{ width: "450px", height: "300px" }}

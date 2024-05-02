@@ -9,6 +9,7 @@ import SignUp from "./components/Authentication/Sign_up";
 import Login from "./components/Authentication/Log_in";
 import Landing from "./components/Landing Page/LandingPage";
 import Navbar from "./components/Navbar/Navbar";
+import Contact from "./components/Contact/Contact";
 
 function App() {
   return (
@@ -20,6 +21,7 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<SignUp />} />
           <Route path="/landing" element={<Landing />} />
+          <Route path="/contact" element={<Contact/>}></Route>
         </Routes>
       </div>
       <ToastContainer />

@@ -79,43 +79,52 @@ exports.getDropoutRatioBySchool = async (req, res) => {
         }
         
         // Find all students belonging to the specified school
-        const students = await Student.find({ schoolId });
+        const students = await Student.find({ schoolId:schoolId });
+        console.log('students',students.length)
         if (students.length === 0) {
             return res.status(200).json({ school, dropoutRatio: 0 });
         }
 
         // Calculate the number of dropout students
-        const dropoutStudents = students.filter(student => student.dropoutStatus);
+        const dropoutStudents = students.filter(student => student.dropoutStatus === true);
         
         // Calculate the dropout ratio
         const dropoutRatio = dropoutStudents.length / students.length;
+        const dropout = dropoutStudents.length;
+        res.status(200).json({ school,dropout, dropoutRatio });
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+};
+  
+// Function to get dropout ratio based on area
+exports.getDropoutRatioByArea = async (req, res) => {
+    try {
+        const area = req.query.area;
+        if (!area) {
+            return res.status(400).json({ error: 'Area parameter is missing in the request' });
+        }
 
-        res.status(200).json({ school, dropoutRatio });
+        const lowercaseArea = area.toLowerCase(); // Convert query parameter to lowercase
+        const schools = await School.find({ 'location.area': { $regex: new RegExp(lowercaseArea, 'i') } }); // Case-insensitive search
+
+        if (!schools.length) {
+            return res.status(404).json({ error: 'No schools found in the specified area' });
+        }
+
+        const schoolIds = schools.map(school => school._id); // Extract school IDs
+        const students = await Student.find({ schoolId: { $in: schoolIds } });
+        const dropoutStudents = students.filter(student => student.dropoutStatus === true);
+        const dropoutRatio = dropoutStudents.length / students.length;
+        const dropout = dropoutStudents.length;
+
+        res.status(200).json({ area: lowercaseArea, dropoutRatio,dropout });
     } catch (err) {
         res.status(500).json({ error: err.message });
     }
 };
 
-  
-  // Function to get dropout ratio based on area
-  exports.getDropoutRatioByArea = async (req, res) => {
-    try {
-      const area = req.query.area;
-      const schools = await School.find({ 'location.area': area });
-  
-      if (!schools.length) {
-        return res.status(404).json({ error: 'No schools found in the specified area' });
-      }
-  
-      const students = await Student.find({ schoolId: { $in: schools.map(school => school._id) } });
-      const dropoutStudents = students.filter(student => student.dropoutStatus);
-      const dropoutRatio = dropoutStudents.length / students.length;
-  
-      res.status(200).json({ area, dropoutRatio });
-    } catch (err) {
-      res.status(500).json({ error: err.message });
-    }
-  };
+
   
   // Function to get dropout ratio based on gender
   exports.getDropoutRatioByGender = async (req, res) => {
@@ -125,7 +134,7 @@ exports.getDropoutRatioBySchool = async (req, res) => {
   
       students.forEach(student => {
         const gender = student.gender;
-        const isDropout = student.dropoutStatus;
+        const isDropout = student.dropoutStatus === true;
   
         if (!genderGroups[gender]) {
           genderGroups[gender] = { totalStudents: 0, dropoutStudents: 0 };
@@ -328,6 +337,7 @@ exports.getDropoutAnalysis = async (req, res) => {
       if (req.query.state) {
         filters['schoolId.location.state'] = req.query.state;
       }
+  
       if (req.query.location) {
         const [lng, lat] = req.query.location.split(',').map(Number);
         filters['schoolId.location.mapLocation'] = {
@@ -336,31 +346,33 @@ exports.getDropoutAnalysis = async (req, res) => {
               type: 'Point',
               coordinates: [lng, lat]
             },
+            $maxDistance: 50000 // Set the maximum distance in meters (e.g., 50km)
           }
         };
       }
+  
       if (req.query.gender) {
         filters.gender = req.query.gender;
       }
+  
       if (req.query.age) {
         filters.age = req.query.age;
       }
+  
       if (req.query.standard) {
         filters.standard = req.query.standard;
       }
+  
       if (req.query.category) {
         filters.caste = req.query.category;
       }
   
       const students = await Student.find({ dropoutStatus: true, ...filters })
-        .populate({
-          path: 'schoolId',
-          select: 'name location'
-        })
+        .populate('schoolId')
         .select('name gender age standard caste dropoutReason dropoutPrediction schoolId');
   
       const populatedStudents = students.map(student => {
-        const schoolLocation = student.schoolId.location;
+        const schoolLocation = student.schoolId ? student.schoolId.location : null;
         return {
           ...student.toObject(),
           schoolLocation

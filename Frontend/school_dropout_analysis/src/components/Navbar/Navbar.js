@@ -163,11 +163,14 @@ import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
-import AdbIcon from "@mui/icons-material/Adb";
+import { Link } from "react-router-dom"; // Import Link for routing
 import FooterLogoSVG from "../Images/Frame 49.svg";
 
-const pages = ["Products", "Pricing", "Blog"];
+const pages = ["Home", "About", "Contact"];
 const settings = ["Profile", "Account", "Dashboard", "Logout"];
+
+// Define array of route paths for pages
+const pageRoutes = ["/landing", "/about", "/contact"]; // Define your route paths accordingly
 
 function ResponsiveAppBar() {
   const [anchorElNav, setAnchorElNav] = React.useState(null);
@@ -195,12 +198,11 @@ function ResponsiveAppBar() {
         style={{ backgroundColor: "#1c1d21", padding: "10px" }}
       >
         <Toolbar disableGutters>
-          {/* <AdbIcon sx={{ display: { xs: "none", md: "flex" }, mr: 1 }} /> */}
           <Typography
             variant="h6"
             noWrap
-            component="a"
-            href="#app-bar-with-responsive-menu"
+            component={Link} // Use Link for routing
+            to="/" // Define the route
             sx={{
               mr: 2,
               display: { xs: "none", md: "flex" },
@@ -243,14 +245,14 @@ function ResponsiveAppBar() {
                 display: { xs: "block", md: "none" },
               }}
             >
-              {pages.map((page) => (
-                <MenuItem key={page} onClick={handleCloseNavMenu}>
-                  <Typography textAlign="center">{page}</Typography>
+              {pageRoutes.map((route, index) => (
+                <MenuItem key={route} onClick={handleCloseNavMenu} component={Link} to={route}>
+                  <Typography textAlign="center">{pages[index]}</Typography>
                 </MenuItem>
               ))}
             </Menu>
           </Box>
-          {/* <AdbIcon sx={{ display: { xs: "flex", md: "none" }, mr: 1 }} /> */}
+          
           <Typography
             variant="h5"
             noWrap
@@ -270,10 +272,11 @@ function ResponsiveAppBar() {
             <img src={FooterLogoSVG} alt="N" width={300} />
           </Typography>
           <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
-            {pages.map((page) => (
+            {pages.map((page, index) => (
               <Button
                 key={page}
-                onClick={handleCloseNavMenu}
+                component={Link} // Use Link for routing
+                to={pageRoutes[index]} // Define the route
                 sx={{ my: 2, color: "white", display: "block" }}
               >
                 {page}

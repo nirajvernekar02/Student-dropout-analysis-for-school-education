@@ -9,9 +9,14 @@ exports.getSchoolCounts = async (req, res) => {
       // Get total student count
       const totalStudents = await Student.countDocuments();
   
+      const totaldropout = await Student.countDocuments({dropoutStatus:true});
+
+      const AverageDropout = float((totaldropout/totalStudents)*100)
       res.status(200).json({
-        totalSchools,
-        totalStudents
+        totalSchool:totalSchools,
+        totalStudents:totalStudents,
+        totalDropout:totaldropout,
+        AverageDropout:AverageDropout
       });
     } catch (error) {
       console.error('Error getting school counts:', error);
