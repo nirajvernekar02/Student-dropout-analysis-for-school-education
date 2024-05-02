@@ -4,7 +4,12 @@ import Autocomplete from "@mui/material/Autocomplete";
 import TextField from "@mui/material/TextField";
 import axios from "axios";
 import { Bar, Pie } from "react-chartjs-2";
+import NumberCard from "./NumberCard.js";
 import Chart from "../../chartUtils.js";
+
+const data = {
+  count: 50,
+};
 
 const School = () => {
   const [selectedSchool, setSelectedSchool] = useState(null);
@@ -157,6 +162,7 @@ const School = () => {
           </Grid>
         </Grid>
       )}
+      {/* <NumberCard data={data} /> */}
     </div>
   );
 };

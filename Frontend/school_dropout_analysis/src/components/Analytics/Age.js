@@ -131,7 +131,7 @@ const Age = () => {
             </CardContent>
           </Card>
         </Grid>
-        <Grid item md={4} xs={12}>
+        <Grid item md={6} xs={12}>
           <Card>
             <CardContent>
               <Typography variant="h5" gutterBottom>
