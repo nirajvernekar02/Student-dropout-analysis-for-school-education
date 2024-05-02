@@ -9,6 +9,8 @@ import SignUp from "./components/Authentication/Sign_up";
 import Login from "./components/Authentication/Log_in";
 import Landing from "./components/Landing Page/LandingPage";
 import Navbar from "./components/Navbar/Navbar";
+import Analytics from "./components/Analytics/Analytics";
+import IndiaMap from "./components/Map/map";
 
 function App() {
   return (
@@ -20,6 +22,8 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<SignUp />} />
           <Route path="/landing" element={<Landing />} />
+          <Route path="/analytics" element={<Analytics />} />
+          <Route path="/map" element={<IndiaMap/>}/>
         </Routes>
       </div>
       <ToastContainer />
