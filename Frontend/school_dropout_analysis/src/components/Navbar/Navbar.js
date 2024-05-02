@@ -485,11 +485,19 @@ import MenuItem from "@mui/material/MenuItem";
 import { Link } from "react-router-dom"; // Import Link for routing
 import FooterLogoSVG from "../Images/Frame 49.svg";
 
+<<<<<<< HEAD
 const pages = ["Home", "About", "Contact", "Login"];
 const settings = ["Profile", "Account", "Dashboard", "Logout"];
 
 // Define array of route paths for pages
 const pageRoutes = ["/", "/about", "/contact", "/login"]; // Define your route paths accordingly
+=======
+const pages = ["Home", "About", "Contact"];
+const settings = ["Profile", "Account", "Dashboard", "Logout"];
+
+// Define array of route paths for pages
+const pageRoutes = ["/landing", "/about", "/contact"]; // Define your route paths accordingly
+>>>>>>> 0202838f646cc4d95f0154d881c64815e975502f
 
 function ResponsiveAppBar() {
   const [anchorElNav, setAnchorElNav] = React.useState(null);
@@ -565,18 +573,26 @@ function ResponsiveAppBar() {
               }}
             >
               {pageRoutes.map((route, index) => (
+<<<<<<< HEAD
                 <MenuItem
                   key={route}
                   onClick={handleCloseNavMenu}
                   component={Link}
                   to={route}
                 >
+=======
+                <MenuItem key={route} onClick={handleCloseNavMenu} component={Link} to={route}>
+>>>>>>> 0202838f646cc4d95f0154d881c64815e975502f
                   <Typography textAlign="center">{pages[index]}</Typography>
                 </MenuItem>
               ))}
             </Menu>
           </Box>
+<<<<<<< HEAD
 
+=======
+          
+>>>>>>> 0202838f646cc4d95f0154d881c64815e975502f
           <Typography
             variant="h5"
             noWrap
