@@ -49,6 +49,7 @@ function LandingPage() {
           </p>
           {/* </Typography> */}
           <Link to="/analytics">
+<<<<<<< HEAD
           <Button
             color="primary"
             style={{
@@ -64,6 +65,24 @@ function LandingPage() {
           >
             Analyze
           </Button></Link>
+=======
+            <Button
+              color="primary"
+              style={{
+                backgroundColor: "#925FE2",
+                color: "white",
+                padding: "10px",
+                width: "250px",
+                marginTop: "40px",
+                marginLeft: "40px",
+                marginRight: "auto", // Align the button to the left
+                borderRadius: "20px",
+              }}
+            >
+              Analyze
+            </Button>
+          </Link>
+>>>>>>> f744e7604ec0b61b7d1a0022aab65aea25794278
         </div>
         <div
           style={{ width: "450px", height: "300px" }}
