@@ -134,7 +134,7 @@ exports.getDropoutRatioByArea = async (req, res) => {
   
       students.forEach(student => {
         const gender = student.gender;
-        const isDropout = student.dropoutStatus === true;
+        const isDropout = student.dropoutStatus;
   
         if (!genderGroups[gender]) {
           genderGroups[gender] = { totalStudents: 0, dropoutStudents: 0 };
@@ -142,7 +142,7 @@ exports.getDropoutRatioByArea = async (req, res) => {
   
         genderGroups[gender].totalStudents += 1;
   
-        if (isDropout) {
+        if (isDropout  === true) {
           genderGroups[gender].dropoutStudents += 1;
         }
       });
@@ -151,7 +151,7 @@ exports.getDropoutRatioByArea = async (req, res) => {
         gender,
         totalStudents,
         dropoutStudents,
-        dropoutRatio: dropoutStudents / totalStudents,
+        dropoutRatio: (dropoutStudents / totalStudents)*100,
       }));
   
       res.status(200).json({ genderData });
@@ -168,7 +168,7 @@ exports.getDropoutRatioByCaste = async (req, res) => {
   
       students.forEach(student => {
         const caste = student.caste;
-        const isDropout = student.dropoutStatus;
+        const isDropout = student.dropoutStatus === true;
   
         if (!casteGroups[caste]) {
           casteGroups[caste] = { totalStudents: 0, dropoutStudents: 0 };
@@ -185,7 +185,7 @@ exports.getDropoutRatioByCaste = async (req, res) => {
         caste,
         totalStudents,
         dropoutStudents,
-        dropoutRatio: dropoutStudents / totalStudents,
+        dropoutRatio: (dropoutStudents / totalStudents)*100,
       }));
   
       res.status(200).json({ casteData });
@@ -214,7 +214,7 @@ exports.getDropoutRatioByStandard = async (req, res) => {
             standardGroups[standard].totalStudents += 1;
 
             // Increment dropout students count if the student has dropped out
-            if (isDropout) {
+            if (isDropout === true) {
                 standardGroups[standard].dropoutStudents += 1;
             }
         });
@@ -224,7 +224,7 @@ exports.getDropoutRatioByStandard = async (req, res) => {
             standard,
             totalStudents,
             dropoutStudents,
-            dropoutRatio: totalStudents === 0 ? 0 : dropoutStudents / totalStudents,
+            dropoutRatio: totalStudents === 0 ? 0 : (dropoutStudents / totalStudents)*100,
         }));
 
         res.status(200).json({ standardData });
@@ -257,7 +257,7 @@ exports.getDropoutRatioByAge = async (req, res) => {
             ageGroups[ageKey].totalStudents += 1;
 
             // Increment dropout students count if the student has dropped out
-            if (isDropout) {
+            if (isDropout === true) {
                 ageGroups[ageKey].dropoutStudents += 1;
             }
         });
